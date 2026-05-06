@@ -59,6 +59,25 @@ async function ensureAutoIncrementId(tableName) {
   }
 }
 
+async function repairCoreTableIds() {
+  const tablesToFix = [
+    'sessions',
+    'addresses',
+    'users',
+    'categories',
+    'banners',
+    'products',
+    'orders',
+    'order_items',
+    'cart_items',
+    'terms_policies'
+  ];
+
+  for (const tableName of tablesToFix) {
+    await ensureAutoIncrementId(tableName);
+  }
+}
+
 export async function ensureDatabaseSeeded() {
   if (!bootstrapPromise) {
     bootstrapPromise = (async () => {
@@ -79,6 +98,7 @@ export async function ensureDatabaseSeeded() {
         }
 
         if (!shouldSeed) {
+          await repairCoreTableIds();
           return { seeded: false };
         }
 
@@ -89,22 +109,7 @@ export async function ensureDatabaseSeeded() {
           await pool.query(statement);
         }
 
-        const tablesToFix = [
-          'sessions',
-          'addresses',
-          'users',
-          'categories',
-          'banners',
-          'products',
-          'orders',
-          'order_items',
-          'cart_items',
-          'terms_policies'
-        ];
-
-        for (const tableName of tablesToFix) {
-          await ensureAutoIncrementId(tableName);
-        }
+        await repairCoreTableIds();
 
         return { seeded: true };
       } catch (error) {
