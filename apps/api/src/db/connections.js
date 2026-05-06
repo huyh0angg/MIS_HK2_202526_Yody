@@ -60,18 +60,14 @@ async function ensureAutoIncrementId(tableName) {
 }
 
 async function repairCoreTableIds() {
-  const tablesToFix = [
-    'sessions',
-    'addresses',
-    'users',
-    'categories',
-    'banners',
-    'products',
-    'orders',
-    'order_items',
-    'cart_items',
-    'terms_policies'
-  ];
+  const [rows] = await pool.query(
+    `SELECT DISTINCT table_name
+     FROM information_schema.columns
+     WHERE table_schema = ? AND column_name = 'id'`,
+    [mysqlDatabase]
+  );
+
+  const tablesToFix = rows.map((row) => row.table_name).filter(Boolean);
 
   for (const tableName of tablesToFix) {
     await ensureAutoIncrementId(tableName);
