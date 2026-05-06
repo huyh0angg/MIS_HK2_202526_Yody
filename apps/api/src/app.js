@@ -386,19 +386,25 @@ export function createApp() {
 
   app.post('/admin/products', requireAdmin, async (req, res) => {
     try {
+      const { name, priceCents } = req.body;
+      if (!name || priceCents == null) return res.status(400).json({ error: 'Name and priceCents are required' });
       const product = await adminCreateProduct(req.body);
       res.json({ data: product });
     } catch (error) {
-      res.status(500).json({ error: 'Failed to create product' });
+      console.error('Admin create product error:', error);
+      res.status(500).json({ error: 'Failed to create product', details: error?.message });
     }
   });
 
   app.put('/admin/products/:id', requireAdmin, async (req, res) => {
     try {
+      const { name, priceCents } = req.body;
+      if (!name || priceCents == null) return res.status(400).json({ error: 'Name and priceCents are required' });
       const product = await adminUpdateProduct(parseInt(req.params.id), req.body);
       res.json({ data: product });
     } catch (error) {
-      res.status(500).json({ error: 'Failed to update product' });
+      console.error('Admin update product error:', error);
+      res.status(500).json({ error: 'Failed to update product', details: error?.message });
     }
   });
 
@@ -407,7 +413,8 @@ export function createApp() {
       await adminDeleteProduct(parseInt(req.params.id));
       res.json({ success: true });
     } catch (error) {
-      res.status(500).json({ error: 'Failed to delete product' });
+      console.error('Admin delete product error:', error);
+      res.status(500).json({ error: 'Failed to delete product', details: error?.message });
     }
   });
 
