@@ -1,4 +1,6 @@
 import mysql from 'mysql2/promise';
+import fs from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
 
 function readEnv(...keys) {
   for (const key of keys) {
@@ -15,6 +17,70 @@ const mysqlPort = parseInt(readEnv('MYSQL_PORT', 'MYSQLPORT', 'DB_PORT') || '330
 const mysqlUser = readEnv('MYSQL_USER', 'MYSQLUSER', 'DB_USER') || 'yody';
 const mysqlPassword = readEnv('MYSQL_PASSWORD', 'MYSQLPASSWORD', 'DB_PASSWORD') || 'yody123';
 const mysqlDatabase = readEnv('MYSQL_DATABASE', 'MYSQLDATABASE', 'DB_NAME', 'DATABASE_NAME') || 'yody_fashion';
+const seedSqlPath = fileURLToPath(new URL('../../../../db/init-unified.sql', import.meta.url));
+
+function splitSqlStatements(sql) {
+  return sql
+    .split(/;\s*(?:\r?\n|$)/)
+    .map((statement) => statement.trim())
+    .filter(Boolean);
+}
+
+function normalizeSeedSql(sql) {
+  return sql
+    .replace(/^SET SQL_MODE = .*?;\s*$/gmi, '')
+    .replace(/^START TRANSACTION;\s*$/gmi, '')
+    .replace(/^SET time_zone = .*?;\s*$/gmi, '')
+    .replace(/^SET NAMES .*?;\s*$/gmi, '')
+    .replace(/^SET CHARACTER SET .*?;\s*$/gmi, '')
+    .replace(/^USE `[^`]+`;\s*$/gmi, '')
+    .replace(/^COMMIT;\s*$/gmi, '')
+    .replace(/CREATE TABLE\s+/g, 'CREATE TABLE IF NOT EXISTS ')
+    .replace(/INSERT INTO\s+/g, 'INSERT IGNORE INTO ');
+}
+
+let bootstrapPromise = null;
+
+export async function ensureDatabaseSeeded() {
+  if (!bootstrapPromise) {
+    bootstrapPromise = (async () => {
+      try {
+        const [tableRows] = await pool.query(
+          `SELECT COUNT(*) AS count
+           FROM information_schema.tables
+           WHERE table_schema = ? AND table_name = 'products'`,
+          [mysqlDatabase]
+        );
+
+        const tableExists = Number(tableRows?.[0]?.count || 0) > 0;
+        let shouldSeed = !tableExists;
+
+        if (!shouldSeed) {
+          const [productRows] = await pool.query('SELECT COUNT(*) AS count FROM products');
+          shouldSeed = Number(productRows?.[0]?.count || 0) === 0;
+        }
+
+        if (!shouldSeed) {
+          return { seeded: false };
+        }
+
+        const seedSql = normalizeSeedSql(await fs.readFile(seedSqlPath, 'utf8'));
+        const statements = splitSqlStatements(seedSql);
+
+        for (const statement of statements) {
+          await pool.query(statement);
+        }
+
+        return { seeded: true };
+      } catch (error) {
+        console.error('Database bootstrap error:', error.message);
+        return { seeded: false, error };
+      }
+    })();
+  }
+
+  return bootstrapPromise;
+}
 
 export const pool = mysql.createPool({
   host: mysqlHost,
