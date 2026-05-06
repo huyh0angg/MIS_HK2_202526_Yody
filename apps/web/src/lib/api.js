@@ -1,4 +1,4 @@
-import { fallbackProducts, fallbackSummary } from '../data/catalog';
+import { fallbackProducts, fallbackSummary } from '../data/catalog.js';
 import { getSessionId } from './storage';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000';

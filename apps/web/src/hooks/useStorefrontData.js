@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fallbackProducts } from '../data/catalog';
+import { fallbackProducts } from '../data/catalog.js';
 import { fetchStorefrontProducts, fetchDashboardSummary, formatCurrency } from '../lib/api';
 
 export function useStorefrontData() {

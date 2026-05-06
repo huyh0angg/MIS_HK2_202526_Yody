@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { createStoreOrder, fetchCart } from '../../lib/api';
 import { calculateCartTotals, setLatestOrder } from '../../lib/storage';
 import { formatDisplayPrice, productEmoji, paymentLabel } from '../../lib/helpers';
-import { paymentMethods } from '../../data/catalog';
+import { paymentMethods } from '../../data/catalog.js';
 import { provinces, getDistricts, getWards } from '../../data/addressData';
 import Shell from '../common/Shell';
 

@@ -1,4 +1,4 @@
-import { paymentMethods } from '../data/catalog';
+import { paymentMethods } from '../data/catalog.js';
 
 export function formatDisplayPrice(value) {
   return `${new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 0 }).format(value)} VNĐ`;

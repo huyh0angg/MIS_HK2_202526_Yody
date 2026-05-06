@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { categories } from '../../data/catalog';
+import { categories } from '../../data/catalog.js';
 import Shell from '../common/Shell';
 import ProductCard from '../UI/ProductCard';
 

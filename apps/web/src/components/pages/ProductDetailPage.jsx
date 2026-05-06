@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { getProductBySku } from '../../data/catalog';
+import { getProductBySku } from '../../data/catalog.js';
 import { fetchStorefrontProduct } from '../../lib/api';
 import { productEmoji, formatDisplayPrice, colorSwatchStyle } from '../../lib/helpers';
 import Shell from '../common/Shell';
