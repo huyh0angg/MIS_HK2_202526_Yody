@@ -5,7 +5,7 @@ export const pool = mysql.createPool({
   port: parseInt(process.env.MYSQL_PORT || '3306'),
   user: process.env.MYSQL_USER || 'yody',
   password: process.env.MYSQL_PASSWORD || 'yody123',
-  database: process.env.DB_NAME || 'yody_fashion',
+  database: process.env.MYSQL_DATABASE || process.env.DB_NAME || 'yody_fashion',
   charset: 'utf8mb4',
   waitForConnections: true,
   connectionLimit: 10,

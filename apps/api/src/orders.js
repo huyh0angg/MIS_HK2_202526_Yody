@@ -97,6 +97,12 @@ export async function createOrder(orderData) {
          VALUES (?, ?, ?, ?, ?, ?, ?)`,
         [orderId, item.productId, item.productName, item.productImage, item.priceCents, item.quantity, item.subtotalCents]
       );
+
+      // Update inventory - decrease stock
+      await connection.execute(
+        'UPDATE inventory SET stock = stock - ? WHERE product_id = ?',
+        [item.quantity, item.productId]
+      );
     }
 
     await connection.execute(

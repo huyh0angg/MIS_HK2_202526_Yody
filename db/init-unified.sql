@@ -206,21 +206,6 @@ CREATE TABLE `inventory` (
 
 INSERT INTO `inventory` (`product_id`, `stock`) VALUES (1, 100), (2, 80), (3, 150), (4, 50), (5, 120), (6, 90), (7, 110), (8, 70), (9, 60), (10, 85), (11, 40), (12, 10);
 
--- Sample Orders Data
-INSERT INTO `orders` (`user_id`, `total_cents`, `status`, `payment_method`, `payment_status`, `shipping_name`, `shipping_phone`, `shipping_province`, `shipping_district`, `shipping_ward`, `shipping_address`, `shipping_fee_cents`, `created_at`) VALUES
-(2, 429000, 'DELIVERED', 'COD', 'PAID', 'Huy Hoàng Trần', '0912345678', 'Hà Nội', 'Quận Hoàn Kiếm', 'Phường Hàng Bạc', '123 Phố Hàng Bạc', 30000, DATE_SUB(NOW(), INTERVAL 2 DAY)),
-(3, 359000, 'CONFIRMED', 'COD', 'PENDING', 'Nguyễn Thị Hoa', '0987654321', 'TP HCM', 'Quận 1', 'Phường Bến Nghé', '456 Nguyễn Huệ', 25000, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-(4, 659000, 'SHIPPING', 'BANK_TRANSFER', 'PAID', 'Trần Văn Minh', '0901234567', 'Đà Nẵng', 'Quận Hải Châu', 'Phường Thạch Thang', '789 Trần Phú', 20000, NOW()),
-(2, 499000, 'PENDING', 'COD', 'PENDING', 'Huy Hoàng Trần', '0912345678', 'Hà Nội', 'Quận Hoàn Kiếm', 'Phường Hàng Bạc', '123 Phố Hàng Bạc', 30000, NOW());
-
--- Sample Order Items Data
-INSERT INTO `order_items` (`order_id`, `product_id`, `product_name`, `product_image`, `price_cents`, `quantity`, `subtotal_cents`) VALUES
-(1, 1, 'Áo Polo Nam Slim', 'https://buggy.yodycdn.com/images/product/cd39cf0670e51c752e6896c97b394308.webp', 499000, 1, 499000),
-(2, 2, 'Áo Polo Nữ Phối Dây', 'https://buggy.yodycdn.com/images/product/2c304767a76d367d0782955c733fe562.webp', 329000, 1, 329000),
-(3, 3, 'Áo Polo Teen', 'https://buggy.yodycdn.com/images/product/9ec366d2e107e12e8bd1ce3d3ff11699.webp', 169000, 1, 169000),
-(3, 4, 'Túi Xách Nữ', 'https://buggy.yodycdn.com/images/product/32521da33ed41f1b8d186561e401e0a7.webp', 499000, 1, 499000),
-(4, 1, 'Áo Polo Nam Slim', 'https://buggy.yodycdn.com/images/product/cd39cf0670e51c752e6896c97b394308.webp', 499000, 1, 499000);
-
 CREATE TABLE `cart_items` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `session_id` varchar(100) DEFAULT NULL,
@@ -274,6 +259,22 @@ CREATE TABLE `order_items` (
   PRIMARY KEY (`id`),
   KEY `idx_order_id` (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- Sample Orders Data
+INSERT INTO `orders` (`user_id`, `total_cents`, `status`, `payment_method`, `payment_status`, `shipping_name`, `shipping_phone`, `shipping_province`, `shipping_district`, `shipping_ward`, `shipping_address`, `shipping_fee_cents`, `created_at`) VALUES
+(2, 429000, 'DELIVERED', 'COD', 'PAID', 'Huy Hoàng Trần', '0912345678', 'Hà Nội', 'Quận Hoàn Kiếm', 'Phường Hàng Bạc', '123 Phố Hàng Bạc', 30000, DATE_SUB(NOW(), INTERVAL 2 DAY)),
+(3, 359000, 'CONFIRMED', 'COD', 'PENDING', 'Nguyễn Thị Hoa', '0987654321', 'TP HCM', 'Quận 1', 'Phường Bến Nghé', '456 Nguyễn Huệ', 25000, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+(4, 659000, 'SHIPPING', 'BANK_TRANSFER', 'PAID', 'Trần Văn Minh', '0901234567', 'Đà Nẵng', 'Quận Hải Châu', 'Phường Thạch Thang', '789 Trần Phú', 20000, NOW()),
+(2, 499000, 'PENDING', 'COD', 'PENDING', 'Huy Hoàng Trần', '0912345678', 'Hà Nội', 'Quận Hoàn Kiếm', 'Phường Hàng Bạc', '123 Phố Hàng Bạc', 30000, NOW());
+
+-- Sample Order Items Data
+INSERT INTO `order_items` (`order_id`, `product_id`, `product_name`, `product_image`, `price_cents`, `quantity`, `subtotal_cents`) VALUES
+(1, 1, 'Áo Polo Nam Slim', 'https://buggy.yodycdn.com/images/product/cd39cf0670e51c752e6896c97b394308.webp', 499000, 1, 499000),
+(2, 2, 'Áo Polo Nữ Phối Dây', 'https://buggy.yodycdn.com/images/product/2c304767a76d367d0782955c733fe562.webp', 329000, 1, 329000),
+(3, 3, 'Áo Polo Teen', 'https://buggy.yodycdn.com/images/product/9ec366d2e107e12e8bd1ce3d3ff11699.webp', 169000, 1, 169000),
+(3, 4, 'Túi Xách Nữ', 'https://buggy.yodycdn.com/images/product/32521da33ed41f1b8d186561e401e0a7.webp', 499000, 1, 499000),
+(4, 1, 'Áo Polo Nam Slim', 'https://buggy.yodycdn.com/images/product/cd39cf0670e51c752e6896c97b394308.webp', 499000, 1, 499000);
 
 CREATE TABLE `payment_methods` (
   `id` bigint NOT NULL AUTO_INCREMENT,

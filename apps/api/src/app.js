@@ -45,6 +45,15 @@ export function createApp() {
     next();
   });
 
+  app.get('/', (req, res) => {
+    res.json({
+      ok: true,
+      service: 'yody-api',
+      message: 'Yody API is running',
+      timestamp: new Date().toISOString()
+    });
+  });
+
   app.get('/health', (req, res) => {
     res.json({ ok: true, service: 'yody-api', timestamp: new Date().toISOString() });
   });

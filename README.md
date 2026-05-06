@@ -7,7 +7,6 @@ Full-stack e-commerce monorepo dùng npm workspaces.
 - **Database:** MySQL 8
 - **Infra phụ trợ:** Redis 7, phpMyAdmin (qua Docker)
 
-> Lưu ý: Redis hiện đang có trong Docker Compose nhưng chưa được backend sử dụng trong code.
 
 ## 1) Cấu trúc dự án
 
