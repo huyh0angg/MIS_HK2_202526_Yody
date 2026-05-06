@@ -171,3 +171,23 @@ Chi tiết đầy đủ xem thêm file `API_DOCUMENTATION.md`.
 - Dữ liệu local hiện lưu trong thư mục `data/mysql` (được mount từ Docker).
 - Mã nguồn prototype cũ trong `apps/web/public/ui` chỉ để tham chiếu UI tĩnh.
 
+## 10) Deploy frontend lên Render
+
+Frontend `apps/web` là một **Static Site** trên Render.
+
+### Cấu hình cần dùng
+
+- **Root Directory**: `apps/web`
+- **Build Command**: `npm install && npm run build`
+- **Publish Directory**: `dist`
+- **SPA Rewrite**: mọi route trỏ về `/index.html`
+
+### Biến môi trường cần đặt trên Render
+
+- `VITE_API_BASE_URL`: URL backend deploy thật, ví dụ `https://mis-hk2-202526-yody.onrender.com`
+
+### Lưu ý
+
+- Vì frontend dùng `BrowserRouter`, Render cần rewrite về `index.html` để refresh không bị 404.
+- Nếu backend deploy ở domain khác, nhớ cập nhật lại `VITE_API_BASE_URL` trước khi build.
+
