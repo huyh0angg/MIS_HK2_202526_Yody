@@ -41,6 +41,24 @@ function normalizeSeedSql(sql) {
 
 let bootstrapPromise = null;
 
+async function ensureAutoIncrementId(tableName) {
+  const [rows] = await pool.query(
+    `SELECT EXTRA, COLUMN_TYPE
+     FROM information_schema.columns
+     WHERE table_schema = ? AND table_name = ? AND column_name = 'id'`,
+    [mysqlDatabase, tableName]
+  );
+
+  const column = rows?.[0];
+  if (!column) {
+    return;
+  }
+
+  if (!String(column.EXTRA || '').toLowerCase().includes('auto_increment')) {
+    await pool.query(`ALTER TABLE \`${tableName}\` MODIFY COLUMN id ${column.COLUMN_TYPE} NOT NULL AUTO_INCREMENT`);
+  }
+}
+
 export async function ensureDatabaseSeeded() {
   if (!bootstrapPromise) {
     bootstrapPromise = (async () => {
@@ -69,6 +87,23 @@ export async function ensureDatabaseSeeded() {
 
         for (const statement of statements) {
           await pool.query(statement);
+        }
+
+        const tablesToFix = [
+          'sessions',
+          'addresses',
+          'users',
+          'categories',
+          'banners',
+          'products',
+          'orders',
+          'order_items',
+          'cart_items',
+          'terms_policies'
+        ];
+
+        for (const tableName of tablesToFix) {
+          await ensureAutoIncrementId(tableName);
         }
 
         return { seeded: true };
