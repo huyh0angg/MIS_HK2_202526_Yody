@@ -4,7 +4,7 @@ import { createStoreOrder, fetchCart } from '../../lib/api';
 import { calculateCartTotals, setLatestOrder } from '../../lib/storage';
 import { formatDisplayPrice, productEmoji, paymentLabel } from '../../lib/helpers';
 import { paymentMethods } from '../../data/catalog.js';
-import { provinces, getDistricts, getWards } from '../../data/addressData';
+import { provinces, getDistricts, getWards } from '../../data/addressData.js';
 import Shell from '../common/Shell';
 
 export default function CheckoutPage({ products, cartCount, onCartMutate, onQuickLogout }) {
