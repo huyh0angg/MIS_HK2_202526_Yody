@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { registerCustomer } from '../../lib/api';
-import { setAuthSession } from '../../lib/storage';
+import { setAuthSession, setSessionId } from '../../lib/storage';
 import { useAuthSession } from '../../hooks/useAuthSession';
 
 export default function RegisterPage({ cartCount, onQuickLogout }) {
@@ -52,6 +52,7 @@ export default function RegisterPage({ cartCount, onQuickLogout }) {
       };
       setAuthSession(nextSession);
       setSession(nextSession);
+      if (payload.sessionId) setSessionId(payload.sessionId);
       setTimeout(() => navigate('/'), 1000);
     } catch (_e) {
       setError('Đăng ký thất bại. Email này có thể đã được sử dụng. Vui lòng thử lại.');

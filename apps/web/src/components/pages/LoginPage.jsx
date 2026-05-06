@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { loginCustomer } from '../../lib/api';
-import { setAuthSession, clearAuthSession } from '../../lib/storage';
+import { setAuthSession, clearAuthSession, setSessionId } from '../../lib/storage';
 import { useAuthSession } from '../../hooks/useAuthSession';
 
 export default function LoginPage({ cartCount, onQuickLogout }) {
@@ -56,6 +56,7 @@ export default function LoginPage({ cartCount, onQuickLogout }) {
 
       setAuthSession(nextSession);
       setSession(nextSession);
+      if (payload.sessionId) setSessionId(payload.sessionId);
       setMessage(`Đăng nhập thành công: ${payload.user?.email || loginForm.email}`);
       setTimeout(() => navigate('/'), 1000);
     } catch (_e) {

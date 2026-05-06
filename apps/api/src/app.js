@@ -186,7 +186,20 @@ export function createApp() {
       const { email, password, fullName } = req.body;
       if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
       const user = await registerUser(email, password, fullName);
-      res.json({ user });
+      // attach session to user (like login flow)
+      let sessionId = req.session?.session_id;
+      if (sessionId) {
+        await updateSessionUser(sessionId, user.id);
+      } else {
+        sessionId = uuidv4();
+        await execute(
+          'INSERT INTO sessions (session_id, user_id) VALUES (?, ?)',
+          [sessionId, user.id]
+        );
+        res.cookie('sessionId', sessionId, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000 });
+      }
+
+      res.json({ token: `yody_${user.id}_${Date.now()}`, sessionId, user });
     } catch (error) {
       console.error('Register error:', error);
       if (error.code === 'ER_DUP_ENTRY') return res.status(409).json({ error: 'Email already exists' });

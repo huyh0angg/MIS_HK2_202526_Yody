@@ -166,6 +166,8 @@ export async function registerCustomer(payload) {
   });
 
   return {
+    token: data.token,
+    sessionId: data.sessionId,
     user: data.user
   };
 }

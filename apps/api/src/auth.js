@@ -32,7 +32,7 @@ export async function registerUser(email, password, fullName = null) {
   const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
   const result = await execute(
     'INSERT INTO users (email, password_hash, full_name, role, is_verified) VALUES (?, ?, ?, ?, ?)',
-    [email, passwordHash, fullName, 'USER', 0]
+    [email, passwordHash, fullName, 'USER', 1]
   );
   return { id: result.insertId, email, fullName };
 }
