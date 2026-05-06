@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xác Nhận Đơn Hàng - Yody Fashion</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f7f8fb;
+            min-height: 100vh;
+            color: #001a33;
+            font-size: 16px;
+        }
+        .page-shell {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px 20px 40px;
+        }
+        .success-header {
+            text-align: center;
+            margin: 6px 0 22px;
+        }
+        .success-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            margin: 0 auto 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eaf7ee;
+            color: #2ca24c;
+            font-size: 30px;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(44, 162, 76, 0.08);
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        .success-title {
+            font-size: 34px;
+            font-weight: 700;
+            color: #001a33;
+            margin-bottom: 10px;
+        }
+        .success-message {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+            max-width: 720px;
+            margin: 0 auto 26px;
+        }
+        .content-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 340px;
+            gap: 18px;
+            align-items: start;
+        }
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            border: 1px solid #edf0f4;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+        }
+        .order-meta {
+            padding: 18px 20px;
+        }
+        .order-meta-top {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 14px;
+            padding: 16px 18px;
+            min-height: 92px;
+            border-bottom: 1px solid #eceff3;
+            background: #f9fbfd;
+            border-radius: 10px;
+        }
+        .meta-block {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .meta-label {
+            font-size: 12px;
+            letter-spacing: 0.04em;
+            color: #8b95a5;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+        .meta-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: #002D5E;
+        }
+        .order-status {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+        }
+        .status-step {
+            text-align: center;
+            color: #8b95a5;
+        }
+        .status-icon {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            margin: 0 auto 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            background: #f1f3f7;
+            color: #9aa6b2;
+            border: 1px solid #dbe1e8;
+        }
+        .status-step.active .status-icon {
+            background: #ff8c00;
+            color: #fff;
+            border-color: #ff8c00;
+        }
+        .status-step.done .status-icon {
+            background: #eaf7ee;
+            color: #2ca24c;
+            border-color: #cdeed7;
+        }
+        .status-title {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .status-step.active .status-title,
+        .status-step.done .status-title {
+            color: #002D5E;
+        }
+        .status-subtitle {
+            font-size: 12px;
+            color: #8b95a5;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .info-card {
+            padding: 16px 18px;
+        }
+        .info-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #002D5E;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .info-title::before {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ff8c00;
+            flex-shrink: 0;
+        }
+        .info-line {
+            display: flex;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 7px 0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .info-line .label {
+            color: #7a8594;
+            font-weight: 600;
+        }
+        .info-line .value {
+            color: #002D5E;
+            font-weight: 700;
+            text-align: right;
+        }
+        .payment-note {
+            margin-top: 10px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            background: #f5f8fc;
+            color: #4d5c70;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        .delivery-card,
+        .payment-card {
+            padding: 16px 18px;
+        }
+        .order-confirm-summary {
+            padding: 16px 18px 18px;
+        }
+        .summary-title {
+            font-size: 19px;
+            font-weight: 700;
+            color: #002D5E;
+            margin-bottom: 12px;
+        }
+        .summary-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid #edf0f4;
+            font-size: 14px;
+        }
+        .summary-item:last-of-type {
+            border-bottom: none;
+        }
+        .summary-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+        .summary-thumb {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background: #f3f4f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            flex-shrink: 0;
+        }
+        .summary-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #002D5E;
+            line-height: 1.35;
+        }
+        .summary-sub {
+            font-size: 12px;
+            color: #8b95a5;
+            margin-top: 2px;
+        }
+        .summary-price {
+            font-size: 14px;
+            font-weight: 700;
+            color: #002D5E;
+            white-space: nowrap;
+        }
+        .summary-breakdown {
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid #edf0f4;
+        }
+        .breakdown-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 7px 0;
+            font-size: 14px;
+            color: #7a8594;
+        }
+        .breakdown-row.total {
+            padding-top: 12px;
+            margin-top: 8px;
+            border-top: 1px solid #edf0f4;
+            font-size: 18px;
+            font-weight: 700;
+            color: #002D5E;
+        }
+        .breakdown-row.total .amount {
+            color: #ff8c00;
+        }
+        .cta-buttons {
+            margin-top: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .btn-link {
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+        .btn-order {
+            background: #ff8c00;
+            color: #fff;
+        }
+        .btn-order:hover {
+            background: #e67e00;
+        }
+        .btn-continue {
+            background: #fff;
+            color: #002D5E;
+            border: 1.5px solid #cfd7e2;
+        }
+        .btn-continue:hover {
+            background: #f7f9fc;
+        }
+        .shipping-note {
+            margin-top: 12px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            background: #f5f8fc;
+            color: #002D5E;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+        }
+        .section-header {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+        }
+        .summary-wrap {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+        .summary-card {
+            padding: 16px 18px;
+        }
+        .summary-card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #002D5E;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .summary-card-title::before {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ff8c00;
+            flex-shrink: 0;
+        }
+        .summary-card-text {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #4d5c70;
+        }
+        .summary-card-text strong {
+            color: #002D5E;
+        }
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            .checkout-summary {
+                position: relative;
+                top: auto;
+            }
+        }
+        @media (max-width: 768px) {
+            .order-meta-top,
+            .info-grid,
+            .payment-method {
+                grid-template-columns: 1fr;
+            }
+            .order-status {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .info-line {
+                flex-direction: column;
+            }
+            .info-line .value {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-shell">
+        <div class="success-header">
+            <div class="success-icon">✓</div>
+            <h1 class="success-title">Đặt hàng thành công!</h1>
+            <p class="success-message">
+                Cảm ơn bạn đã mua sắm cùng Yody. Đơn hàng của bạn đã được tiếp nhận và đang được xử lý.
+            </p>
+        </div>
+
+        <div class="content-grid">
+            <div class="left-column">
+                <div class="card order-meta">
+                    <div class="order-meta-top">
+                        <div class="meta-block">
+                            <div class="meta-label">Mã đơn hàng</div>
+                            <div class="meta-value">YD-2026-0428</div>
+                        </div>
+                        <div class="meta-block" style="text-align:right;">
+                            <div class="meta-label">Dự kiến giao hàng</div>
+                            <div class="meta-value">02 Tháng 5, 2026</div>
+                        </div>
+                    </div>
+
+                    <div class="order-status">
+                        <div class="status-step done">
+                            <div class="status-icon">✓</div>
+                            <div class="status-title">Đặt hàng</div>
+                            <div class="status-subtitle">28/04/2026</div>
+                        </div>
+                        <div class="status-step active">
+                            <div class="status-icon">⏺</div>
+                            <div class="status-title">Đang xử lý</div>
+                            <div class="status-subtitle">Hiện tại</div>
+                        </div>
+                        <div class="status-step">
+                            <div class="status-icon">○</div>
+                            <div class="status-title">Giao hàng</div>
+                            <div class="status-subtitle">Dự kiến 30/04</div>
+                        </div>
+                        <div class="status-step">
+                            <div class="status-icon">○</div>
+                            <div class="status-title">Đã nhận</div>
+                            <div class="status-subtitle">Dự kiến 02/05</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-grid">
+                    <div class="card info-card">
+                        <div class="info-title">Địa chỉ nhận hàng</div>
+                        <div class="info-line"><span class="label">Người nhận</span><span class="value">Nguyễn Văn A</span></div>
+                        <div class="info-line"><span class="label">Địa chỉ</span><span class="value">123 Phố Huế, Quận Hai Bà Trưng, Hà Nội</span></div>
+                        <div class="info-line"><span class="label">SĐT</span><span class="value">+84 987 654 321</span></div>
+                    </div>
+
+                    <div class="card info-card">
+                        <div class="info-title">Phương thức thanh toán</div>
+                        <div class="info-line"><span class="label">Hình thức</span><span class="value">Thanh toán khi nhận hàng (COD)</span></div>
+                            <div class="payment-note">Vui lòng chuẩn bị sẵn số tiền mặt chính xác khi nhân viên giao hàng liên hệ.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checkout-summary card order-confirm-summary">
+                <div class="summary-title">Tóm tắt đơn hàng</div>
+
+                <div class="summary-item">
+                    <div class="summary-left">
+                        <div class="summary-thumb">🧥</div>
+                        <div>
+                            <div class="summary-name">Áo polo nam basic</div>
+                            <div class="summary-sub">Màu: Xanh Navy | Kích cỡ: L · SL: 1</div>
+                        </div>
+                    </div>
+                    <div class="summary-price">350.000đ</div>
+                </div>
+
+                <div class="summary-item">
+                    <div class="summary-left">
+                        <div class="summary-thumb">👖</div>
+                        <div>
+                            <div class="summary-name">Quần jean nam slimfit</div>
+                            <div class="summary-sub">Màu: Đen | Kích cỡ: 32 · SL: 1</div>
+                        </div>
+                    </div>
+                    <div class="summary-price">450.000đ</div>
+                </div>
+
+                <div class="summary-breakdown">
+                    <div class="breakdown-row"><span>Tạm tính</span><span>800.000đ</span></div>
+                    <div class="breakdown-row"><span>Phí vận chuyển</span><span>50.000đ</span></div>
+                    <div class="breakdown-row total"><span>Tổng cộng</span><span class="amount">850.000đ</span></div>
+                </div>
+
+                <div class="shipping-note">↪ Theo dõi đơn hàng được cập nhật liên tục.</div>
+
+                <div class="cta-buttons">
+                    <a href="home.html" class="btn-link btn-order">Theo dõi đơn hàng</a>
+                    <a href="home.html" class="btn-link btn-continue">Tiếp tục mua sắm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+        <script>
+            (function(){
+                function formatMoney(cents){
+                    if(!cents) return '0đ';
+                    return cents.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + 'đ';
+                }
+
+                var mapping = {
+                    'COD': 'Thanh toán khi nhận hàng (COD)',
+                    'BANK_TRANSFER': 'Chuyển khoản ngân hàng',
+                    'EWALLET': 'Ví điện tử (Momo / ZaloPay)',
+                    'CREDIT_CARD': 'Thẻ tín dụng/ghi nợ',
+                    'VNPAY': 'Thanh toán VNPay'
+                };
+
+                var raw = localStorage.getItem('yody_latest_order');
+                if(!raw) return;
+                try{
+                    var order = JSON.parse(raw);
+                }catch(e){ return; }
+
+                // Fill order id
+                var metaValues = document.querySelectorAll('.meta-value');
+                if(metaValues && metaValues.length){
+                    metaValues[0].textContent = order.id || metaValues[0].textContent;
+                    // expected delivery: estimate +5 days as default
+                    var d = new Date(order.created_at || Date.now());
+                    d.setDate(d.getDate() + (order.shipping && order.shipping.method === 'express' ? 2 : (order.shipping && order.shipping.method === 'same-day' ? 0 : 5)));
+                    var opt = { day: '2-digit', month: 'long', year: 'numeric' };
+                    metaValues[1].textContent = d.toLocaleDateString('vi-VN', opt);
+                }
+
+                // Fill address
+                var infoCards = document.querySelectorAll('.info-card');
+                if(infoCards && infoCards.length){
+                    var addrCard = infoCards[0];
+                    var vals = addrCard.querySelectorAll('.info-line .value');
+                    if(vals && vals.length>=3){
+                        vals[0].textContent = order.fullname || vals[0].textContent;
+                        var fullAddr = [order.address, order.ward, order.district, order.province].filter(Boolean).join(', ');
+                        vals[1].textContent = fullAddr || vals[1].textContent;
+                        vals[2].textContent = order.phone || vals[2].textContent;
+                    }
+
+                    // payment card
+                    var payCard = infoCards[1];
+                    var payVal = payCard.querySelector('.info-line .value');
+                    if(payVal){
+                        var code = (order.payment && order.payment.code) || '';
+                        payVal.textContent = mapping[code] || code || payVal.textContent;
+                    }
+
+                    var note = payCard.querySelector('.payment-note');
+                    if(note){
+                        if(order.payment && order.payment.code === 'COD'){
+                            note.textContent = 'Vui lòng chuẩn bị sẵn số tiền mặt chính xác khi nhân viên giao hàng liên hệ.';
+                        } else if(order.payment && (order.payment.code === 'EWALLET' || order.payment.code === 'VNPAY')){
+                            note.textContent = 'Sau khi đặt hàng, bạn sẽ được chuyển tới cổng thanh toán để hoàn tất giao dịch.';
+                        } else if(order.payment && order.payment.code === 'BANK_TRANSFER'){
+                            note.textContent = 'Vui lòng chuyển khoản theo hướng dẫn trong email/chi tiết đơn hàng.';
+                        } else {
+                            note.style.display = 'none';
+                        }
+                    }
+                }
+
+                // Render items
+                var summaryWrap = document.querySelector('.order-confirm-summary');
+                if(summaryWrap && order.items && order.items.length){
+                    // remove existing sample items
+                    var existing = summaryWrap.querySelectorAll('.summary-item');
+                    existing.forEach(function(n){ n.parentNode && n.parentNode.removeChild(n); });
+
+                    var container = summaryWrap.querySelector('.summary-title');
+                    order.items.forEach(function(it){
+                        var el = document.createElement('div'); el.className = 'summary-item';
+                        el.innerHTML = '<div class="summary-left"><div class="summary-thumb">🛍️</div><div><div class="summary-name">'+(it.name||'')+'</div><div class="summary-sub">SL: '+(it.quantity||1)+'</div></div></div><div class="summary-price">'+formatMoney(it.price_cents)+'</div>';
+                        container.parentNode.insertBefore(el, container.nextSibling);
+                    });
+
+                    // update breakdown
+                    var subtotalRow = summaryWrap.querySelector('.breakdown-row');
+                    if(subtotalRow) subtotalRow.querySelector('span:last-child').textContent = formatMoney(order.subtotal_cents);
+                    var shipRow = summaryWrap.querySelectorAll('.breakdown-row')[1];
+                    if(shipRow) shipRow.querySelector('span:last-child').textContent = formatMoney(order.shipping && order.shipping.fee_cents);
+                    var totalRow = summaryWrap.querySelector('.breakdown-row.total .amount');
+                    if(totalRow) totalRow.textContent = formatMoney(order.total_cents);
+                }
+            })();
+        </script>
+    </body>
+    </html>

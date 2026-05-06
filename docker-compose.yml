@@ -1,0 +1,45 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: yody-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: yody_fashion
+      MYSQL_USER: yody
+      MYSQL_PASSWORD: yody123
+    ports:
+      - "3306:3306"
+    command: >
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+      - ./db/init-unified.sql:/docker-entrypoint-initdb.d/init-unified.sql:ro
+
+  redis:
+    image: redis:7-alpine
+    container_name: yody-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: yody-phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: yody
+      PMA_PASSWORD: yody123
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+
+volumes:
+  redis_data:

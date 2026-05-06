@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sản Phẩm Mới - Yody Fashion</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+        }
+        header {
+            background-color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #001a33;
+            text-decoration: none;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+        .logo:hover {
+            color: #ff8c00;
+        }
+        .search-bar {
+            flex: 0 0 350px;
+            margin: 0;
+            position: relative;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .search-bar button {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: #333;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            flex: 1;
+        }
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+            white-space: nowrap;
+        }
+        .nav-menu a:hover {
+            color: #ff8c00;
+        }
+        .header-actions {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+        .header-actions a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+        .header-actions a:hover {
+            color: #ff8c00;
+        }
+        .cart-icon {
+            position: relative;
+        }
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #ff8c00;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .user-dropdown {
+            position: relative;
+        }
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 180px;
+            margin-top: 10px;
+            display: none;
+            z-index: 1000;
+        }
+        .dropdown-menu.active {
+            display: block;
+        }
+        .dropdown-menu a {
+            display: block;
+            padding: 12px 20px;
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            transition: all 0.3s;
+            border: none;
+            background: none;
+            text-align: left;
+            width: 100%;
+            cursor: pointer;
+        }
+        .dropdown-menu a:first-child {
+            border-bottom: 1px solid #eee;
+        }
+        .dropdown-menu a:hover {
+            background-color: #f5f5f5;
+            color: #ff8c00;
+            padding-left: 25px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 30px;
+        }
+        .breadcrumb {
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 20px;
+            grid-column: 1 / -1;
+        }
+        .breadcrumb a {
+            color: #ff8c00;
+            text-decoration: none;
+        }
+        .page-header {
+            margin-bottom: 40px;
+            grid-column: 1 / -1;
+        }
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #001a33;
+            margin-bottom: 10px;
+        }
+        .page-description {
+            color: #666;
+            font-size: 14px;
+        }
+        .filter-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: fit-content;
+            position: sticky;
+            top: 90px;
+        }
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .filter-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+        }
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .filter-option input[type="checkbox"] {
+            cursor: pointer;
+        }
+        .filter-option label {
+            font-size: 13px;
+            color: #666;
+            cursor: pointer;
+            margin: 0;
+        }
+        .sort-section {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .sort-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+        }
+        .sort-select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .product-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+        }
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            position: relative;
+        }
+        .new-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ff8c00;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .product-info {
+            padding: 15px;
+        }
+        .product-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .product-rating {
+            color: #ffc107;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+        .product-price {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .current-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: #ff8c00;
+        }
+        .original-price {
+            font-size: 12px;
+            color: #999;
+            text-decoration: line-through;
+        }
+        .product-button {
+            width: 100%;
+            padding: 8px;
+            background-color: #ff8c00;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .product-button:hover {
+            background-color: #e67e00;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 40px;
+        }
+        .pagination button,
+        .pagination a {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            background-color: white;
+            color: #333;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 13px;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        .pagination button:hover,
+        .pagination a:hover {
+            border-color: #ff8c00;
+            color: #ff8c00;
+        }
+        .pagination button.active,
+        .pagination a.active {
+            background-color: #ff8c00;
+            color: white;
+            border-color: #ff8c00;
+        }
+        @media (max-width: 1024px) {
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .filter-section {
+                position: static;
+            }
+            .sort-section {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .page-title {
+                font-size: 24px;
+            }
+        }
+        footer {
+            background-color: #001a33;
+            color: white;
+            padding: 50px 20px 30px;
+            margin-top: 80px;
+        }
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .footer-section {
+            display: flex;
+            flex-direction: column;
+        }
+        .footer-section h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: white;
+        }
+        .footer-section-description {
+            font-size: 13px;
+            color: #b0b0b0;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .footer-newsletter-text {
+            font-size: 13px;
+            color: #b0b0b0;
+            margin-bottom: 15px;
+            margin-top: 0;
+        }
+        .footer-section ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .footer-section ul li {
+            margin: 0;
+        }
+        .footer-section a {
+            color: #b0b0b0;
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.3s;
+        }
+        .footer-section a:hover {
+            color: #ff8c00;
+        }
+        .footer-newsletter {
+            display: flex;
+            flex-direction: row;
+            gap: 12px;
+        }
+        .footer-newsletter input {
+            padding: 10px 15px;
+            border: 1px solid #444;
+            border-radius: 6px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 13px;
+        }
+        .footer-newsletter input::placeholder {
+            color: #888;
+        }
+        .footer-newsletter button {
+            padding: 10px 20px;
+            background-color: #001a33;
+            border: 1px solid #ff8c00;
+            color: #ff8c00;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .footer-newsletter button:hover {
+            background-color: #ff8c00;
+            color: white;
+        }
+        .footer-bottom {
+            border-top: 1px solid #333;
+            padding-top: 20px;
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="home.html" class="logo">Yody</a>
+            <div class="nav-menu">
+                <a href="newArrival.html">Sản phẩm mới</a>
+                <a href="#women">Nữ</a>
+                <a href="#men">Nam</a>
+                <a href="#kids">Trẻ em</a>
+                <a href="#accessories">Phụ kiện</a>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Tìm kiếm sản phẩm...">
+                <button>🔍</button>
+            </div>
+            <div class="header-actions">
+                <a href="#">❤️</a>
+                <a href="cart.html" class="cart-icon">🛒 <span class="cart-count">0</span></a>
+                <div class="user-dropdown">
+                    <a href="#" onclick="toggleDropdown(event)">👤</a>
+                    <div class="dropdown-menu" id="userDropdown">
+                        <a href="login.html">Đăng nhập</a>
+                        <a href="register.html">Đăng ký</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="home.html">Trang chủ</a> / Sản phẩm mới
+        </div>
+
+        <div class="page-header">
+            <div class="page-title">Sản Phẩm Mới</div>
+            <div class="page-description">Khám phá các bộ sưu tập mới nhất của Yody Fashion</div>
+        </div>
+
+        <div class="filter-section">
+            <div class="filter-group">
+                <label class="filter-label">Danh Mục</label>
+                <div class="filter-options">
+                    <div class="filter-option">
+                        <input type="checkbox" id="cat1">
+                        <label for="cat1">Áo thun</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="cat2">
+                        <label for="cat2">Quần</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="cat3">
+                        <label for="cat3">Váy</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="cat4">
+                        <label for="cat4">Áo khoác</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label class="filter-label">Giá</label>
+                <div class="filter-options">
+                    <div class="filter-option">
+                        <input type="checkbox" id="price1">
+                        <label for="price1">0 - 200.000 VNĐ</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="price2">
+                        <label for="price2">200.000 - 500.000 VNĐ</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="price3">
+                        <label for="price3">500.000 - 1.000.000 VNĐ</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="price4">
+                        <label for="price4">Trên 1.000.000 VNĐ</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label class="filter-label">Kích Thước</label>
+                <div class="filter-options">
+                    <div class="filter-option">
+                        <input type="checkbox" id="size1">
+                        <label for="size1">XS</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="size2">
+                        <label for="size2">S</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="size3">
+                        <label for="size3">M</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="size4">
+                        <label for="size4">L</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label class="filter-label">Màu Sắc</label>
+                <div class="filter-options">
+                    <div class="filter-option">
+                        <input type="checkbox" id="color1">
+                        <label for="color1">Trắng</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="color2">
+                        <label for="color2">Đen</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="color3">
+                        <label for="color3">Xanh dương</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="color4">
+                        <label for="color4">Hồng</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+        <div class="sort-section">
+            <span class="product-count">Hiển thị 12 sản phẩm</span>
+            <div>
+                <label class="sort-label">Sắp xếp theo:</label>
+                <select class="sort-select">
+                    <option>Mới nhất</option>
+                    <option>Bán chạy nhất</option>
+                    <option>Giá: Thấp đến cao</option>
+                    <option>Giá: Cao đến thấp</option>
+                    <option>Đánh giá cao nhất</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="products-grid">
+            <div class="product-card">
+                <div class="product-image">
+                    👕
+                    <span class="new-badge">MỚI</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-name">Áo Thun Nữ Premium</div>
+                    <div class="product-rating">⭐⭐⭐⭐⭐ (85)</div>
+                    <div class="product-price">
+                        <span class="current-price">299.000 VNĐ</span>
+                        <span class="original-price">499.000 VNĐ</span>
+                    </div>
+                    <button class="product-button">Thêm vào giỏ</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    👖
+                    <span class="new-badge">MỚI</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-name">Quần Jean Nữ Trendy</div>
+                    <div class="product-rating">⭐⭐⭐⭐⭐ (62)</div>
+                    <div class="product-price">
+                        <span class="current-price">599.000 VNĐ</span>
+                        <span class="original-price">799.000 VNĐ</span>
+                    </div>
+                    <button class="product-button">Thêm vào giỏ</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    👗
+                    <span class="new-badge">MỚI</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-name">Váy Midi Nữ Sang Trọng</div>
+                    <div class="product-rating">⭐⭐⭐⭐⭐ (124)</div>
+                    <div class="product-price">
+                        <span class="current-price">699.000 VNĐ</span>
+                        <span class="original-price">999.000 VNĐ</span>
+                    </div>
+                    <button class="product-button">Thêm vào giỏ</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    🧥
+                    <span class="new-badge">MỚI</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-name">Áo Khoác Nữ Mỏng</div>
+                    <div class="product-rating">⭐⭐⭐⭐⭐ (48)</div>
+                    <div class="product-price">
+                        <span class="current-price">449.000 VNĐ</span>
+                        <span class="original-price">699.000 VNĐ</span>
+                    </div>
+                    <button class="product-button">Thêm vào giỏ</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    🧣
+                    <span class="new-badge">MỚI</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-name">Áo Cardigan Nữ Nịt</div>
+                    <div class="product-rating">⭐⭐⭐⭐⭐ (91)</div>
+                    <div class="product-price">
+                        <span class="current-price">399.000 VNĐ</span>
+                        <span class="original-price">599.000 VNĐ</span>
+                    </div>
+                    <button class="product-button">Thêm vào giỏ</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    👔
+                    <span class="new-badge">MỚI</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-name">Áo Sơ Mi Nữ Cao Cấp</div>
+                    <div class="product-rating">⭐⭐⭐⭐⭐ (76)</div>
+                    <div class="product-price">
+                        <span class="current-price">549.000 VNĐ</span>
+                        <span class="original-price">799.000 VNĐ</span>
+                    </div>
+                    <button class="product-button">Thêm vào giỏ</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    👜
+                    <span class="new-badge">MỚI</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-name">Túi Xách Nữ Cao Cấp</div>
+                    <div class="product-rating">⭐⭐⭐⭐⭐ (33)</div>
+                    <div class="product-price">
+                        <span class="current-price">899.000 VNĐ</span>
+                        <span class="original-price">1.299.000 VNĐ</span>
+                    </div>
+                    <button class="product-button">Thêm vào giỏ</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    👠
+                    <span class="new-badge">MỚI</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-name">Giày High Heels Nữ</div>
+                    <div class="product-rating">⭐⭐⭐⭐⭐ (57)</div>
+                    <div class="product-price">
+                        <span class="current-price">799.000 VNĐ</span>
+                        <span class="original-price">999.000 VNĐ</span>
+                    </div>
+                    <button class="product-button">Thêm vào giỏ</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    🕶️
+                    <span class="new-badge">MỚI</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-name">Kính Mặt Trời Thời Trang</div>
+                    <div class="product-rating">⭐⭐⭐⭐⭐ (44)</div>
+                    <div class="product-price">
+                        <span class="current-price">349.000 VNĐ</span>
+                        <span class="original-price">499.000 VNĐ</span>
+                    </div>
+                    <button class="product-button">Thêm vào giỏ</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    👒
+                    <span class="new-badge">MỚI</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-name">Mũ Snapback Nam Nữ</div>
+                    <div class="product-rating">⭐⭐⭐⭐⭐ (29)</div>
+                    <div class="product-price">
+                        <span class="current-price">199.000 VNĐ</span>
+                        <span class="original-price">299.000 VNĐ</span>
+                    </div>
+                    <button class="product-button">Thêm vào giỏ</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    👟
+                    <span class="new-badge">MỚI</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-name">Giày Sneaker Unisex</div>
+                    <div class="product-rating">⭐⭐⭐⭐⭐ (68)</div>
+                    <div class="product-price">
+                        <span class="current-price">649.000 VNĐ</span>
+                        <span class="original-price">899.000 VNĐ</span>
+                    </div>
+                    <button class="product-button">Thêm vào giỏ</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="pagination">
+            <button class="active">1</button>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+            <span>...</span>
+            <a href="#">10</a>
+            <button onclick="window.scrollBy(0,300)">Tiếp theo</button>
+        </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Yody</h3>
+                <div class="footer-section-description">
+                    Mục đẹp mỗi ngày cùng Yody. Chúng tôi cam kết mang đến những sản phẩm chất lượng tốt nhất.
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Hỗ Trợ Khách Hàng</h3>
+                <ul>
+                    <li><a href="#">Chính sách bảo mật</a></li>
+                    <li><a href="#">Điều khoản dịch vụ</a></li>
+                    <li><a href="#">Đổi trả & Hoàn tiền</a></li>
+                    <li><a href="#">Thông tin vận chuyển</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Về Yody</h3>
+                <ul>
+                    <li><a href="#">Tìm cửa hàng</a></li>
+                    <li><a href="#">Câu chuyện thương hiệu</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Đăng Ký Nhận Tin</h3>
+                <p class="footer-newsletter-text">Nhận thông tin ưu đãi mới nhất từ Yody</p>
+                <div class="footer-newsletter">
+                    <input type="email" placeholder="Nhập email của bạn">
+                    <button>➤</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 Yody Fashion. Mọi quyền được bảo lưu.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleDropdown(e) {
+            e.preventDefault();
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        // Đóng dropdown khi click ra ngoài
+        document.addEventListener('click', function(event) {
+            const userDropdown = document.querySelector('.user-dropdown');
+            const dropdown = document.getElementById('userDropdown');
+            
+            if (!userDropdown.contains(event.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

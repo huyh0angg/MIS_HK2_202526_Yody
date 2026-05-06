@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s http://localhost:5173/)",
+      "Bash(npm install *)",
+      "Bash(grep \"INSERT INTO \\\\`products\\\\`\" /Users/huy/Desktop/H/MIS_HK2_202526_Yody/db/init-unified.sql -A3)"
+    ]
+  }
+}

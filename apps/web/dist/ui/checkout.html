@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh Toán - Yody Fashion</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+        }
+        header {
+            background-color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #002D5E;
+            text-decoration: none;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+        .logo:hover {
+            color: #ff8c00;
+        }
+        .search-bar {
+            flex: 0 0 350px;
+            position: relative;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            background-color: #f5f5f5;
+        }
+        .search-bar button {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: #333;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            flex: 1;
+            margin: 0 20px;
+        }
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+            white-space: nowrap;
+        }
+        .nav-menu a:hover {
+            color: #ff8c00;
+        }
+        .header-actions {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+        .header-actions a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+        .header-actions a:hover {
+            color: #ff8c00;
+        }
+        .cart-icon {
+            position: relative;
+        }
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #ff8c00;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .user-dropdown {
+            position: relative;
+        }
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 180px;
+            margin-top: 10px;
+            display: none;
+            z-index: 1000;
+        }
+        .dropdown-menu.active {
+            display: block;
+        }
+        .dropdown-menu a {
+            display: block;
+            padding: 12px 20px;
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            transition: all 0.3s;
+            border: none;
+            background: none;
+            text-align: left;
+            width: 100%;
+            cursor: pointer;
+        }
+        .dropdown-menu a:first-child {
+            border-bottom: 1px solid #eee;
+        }
+        .dropdown-menu a:hover {
+            background-color: #f5f5f5;
+            color: #ff8c00;
+            padding-left: 25px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        .breadcrumb {
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 20px;
+        }
+        .breadcrumb a {
+            color: #ff8c00;
+            text-decoration: none;
+        }
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #002D5E;
+            margin-bottom: 30px;
+        }
+        .checkout-wrapper {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 370px;
+            gap: 10px;
+            align-items: start;
+        }
+        .checkout-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .checkout-form .form-section:first-child {
+            max-width: 760px;
+        }
+        .checkout-form .form-section:nth-child(2),
+        .checkout-form .form-section:nth-child(3),
+        .checkout-form .form-section:nth-child(4) {
+            max-width: 760px;
+        }
+        .form-section {
+            margin-bottom: 0;
+            background-color: white;
+            border-radius: 14px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            padding: 24px 26px 26px;
+            border: 1px solid #edf0f4;
+        }
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #002D5E;
+            margin-bottom: 18px;
+        }
+        .section-title::before {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #ff8c00;
+            flex-shrink: 0;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #ff8c00;
+            box-shadow: 0 0 0 3px rgba(255, 140, 0, 0.1);
+        }
+        .form-group input::placeholder {
+            color: #b0b0b0;
+        }
+        .shipping-method {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .shipping-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 16px 18px;
+            border: 1.5px solid #d7dce3;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: #fff;
+        }
+        .shipping-option:hover {
+            border-color: #002D5E;
+            box-shadow: 0 4px 12px rgba(0, 45, 94, 0.06);
+        }
+        .shipping-option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .shipping-option label {
+            margin: 0;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-weight: 600;
+            color: #002D5E;
+        }
+        .shipping-option small {
+            font-size: 12px;
+            color: #7a8594;
+            font-weight: 400;
+        }
+        .shipping-fee {
+            font-size: 14px;
+            font-weight: 700;
+            color: #333;
+            white-space: nowrap;
+        }
+        .payment-method {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .payment-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 18px;
+            border: 1.5px solid #d7dce3;
+            border-radius: 10px;
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #002D5E;
+            font-weight: 600;
+        }
+        .payment-option:hover {
+            border-color: #002D5E;
+            box-shadow: 0 4px 12px rgba(0, 45, 94, 0.06);
+        }
+        .payment-option input[type="radio"] {
+            flex-shrink: 0;
+        }
+        .checkout-summary {
+            background-color: white;
+            border-radius: 14px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            padding: 24px;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+            border: 1px solid #edf0f4;
+        }
+        .summary-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #002D5E;
+            margin-bottom: 20px;
+        }
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 13px;
+            gap: 14px;
+        }
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+        .item-details {
+            flex: 1;
+        }
+        .summary-thumb {
+            width: 54px;
+            height: 54px;
+            border-radius: 10px;
+            background: #f2f2f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            flex-shrink: 0;
+        }
+        .item-name {
+            font-weight: 600;
+            color: #002D5E;
+        }
+        .item-qty {
+            font-size: 12px;
+            color: #999;
+        }
+        .item-price {
+            text-align: right;
+            font-weight: 600;
+            color: #002D5E;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 12px;
+            padding: 12px 0;
+        }
+        .summary-row.total {
+            border-top: 2px solid #e0e0e0;
+            padding-top: 15px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #002D5E;
+        }
+        .summary-row.total .price {
+            color: #ff8c00;
+        }
+        .summary-note {
+            margin-top: 10px;
+            padding: 10px 12px;
+            background: #f5f8fc;
+            border-radius: 8px;
+            color: #002D5E;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+        }
+        .checkout-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: #ff8c00;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        .checkout-btn:hover {
+            background-color: #e67e00;
+        }
+        @media (max-width: 1024px) {
+            .checkout-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .checkout-form .form-section:first-child,
+            .checkout-form .form-section:nth-child(2),
+            .checkout-form .form-section:nth-child(3),
+            .checkout-form .form-section:nth-child(4) {
+                max-width: 100%;
+            }
+            .checkout-summary {
+                position: relative;
+                top: auto;
+            }
+        }
+        @media (max-width: 768px) {
+            .checkout-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .payment-method {
+                grid-template-columns: 1fr;
+            }
+            .checkout-form .form-section:first-child,
+            .checkout-form .form-section:nth-child(2),
+            .checkout-form .form-section:nth-child(3),
+            .checkout-form .form-section:nth-child(4) {
+                max-width: 100%;
+            }
+            .shipping-option {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+        footer {
+            background-color: #002D5E;
+            color: white;
+            padding: 50px 20px 30px;
+            margin-top: 80px;
+        }
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .footer-section {
+            display: flex;
+            flex-direction: column;
+        }
+        .footer-section h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: white;
+        }
+        .footer-section-description {
+            font-size: 13px;
+            color: #b0b0b0;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .footer-newsletter-text {
+            font-size: 13px;
+            color: #b0b0b0;
+            margin-bottom: 15px;
+            margin-top: 0;
+        }
+        .footer-section ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .footer-section ul li {
+            margin: 0;
+        }
+        .footer-section a {
+            color: #b0b0b0;
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.3s;
+        }
+        .footer-section a:hover {
+            color: #ff8c00;
+        }
+        .footer-newsletter {
+            display: flex;
+            flex-direction: row;
+            gap: 12px;
+        }
+        .footer-newsletter input {
+            padding: 10px 15px;
+            border: 1px solid #444;
+            border-radius: 6px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 13px;
+        }
+        .footer-newsletter input::placeholder {
+            color: #888;
+        }
+        .footer-newsletter button {
+            padding: 10px 20px;
+            background-color: #002D5E;
+            border: 1px solid #ff8c00;
+            color: #ff8c00;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .footer-newsletter button:hover {
+            background-color: #ff8c00;
+            color: white;
+        }
+        .footer-bottom {
+            border-top: 1px solid #333;
+            padding-top: 20px;
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="home.html" class="logo">Yody</a>
+            <div class="nav-menu">
+                <a href="newArrival.html">Sản phẩm mới</a>
+                <a href="#women">Nữ</a>
+                <a href="#men">Nam</a>
+                <a href="#kids">Trẻ em</a>
+                <a href="#accessories">Phụ kiện</a>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Tìm kiếm sản phẩm...">
+                <button>🔍</button>
+            </div>
+            <div class="header-actions">
+                <a href="#">❤️</a>
+                <a href="cart.html" class="cart-icon">🛒 <span class="cart-count">0</span></a>
+                <div class="user-dropdown">
+                    <a href="#" onclick="toggleDropdown(event)">👤</a>
+                    <div class="dropdown-menu" id="userDropdown">
+                        <a href="login.html">Đăng nhập</a>
+                        <a href="register.html">Đăng ký</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="checkout-wrapper">
+            <form class="checkout-form">
+                <div class="form-section">
+                    <div class="section-title">Thông tin khách hàng</div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fullname">Họ và tên *</label>
+                            <input type="text" id="fullname" placeholder="Nhập họ và tên" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Số điện thoại *</label>
+                            <input type="tel" id="phone" placeholder="Nhập số điện thoại" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" placeholder="Nhập email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customer-code">Mã khách hàng</label>
+                            <input type="text" id="customer-code" placeholder="(Không bắt buộc)">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-title">Địa chỉ giao hàng</div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="province">Tỉnh / Thành phố *</label>
+                            <select id="province" required>
+                                <option value="">Chọn tỉnh/thành phố</option>
+                                <option value="hcm">TP. Hồ Chí Minh</option>
+                                <option value="hanoi">Hà Nội</option>
+                                <option value="danang">Đà Nẵng</option>
+                                <option value="other">Khác</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="district">Quận / Huyện *</label>
+                            <select id="district" required>
+                                <option value="">Chọn quận/huyện</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="ward">Phường / Xã *</label>
+                            <select id="ward" required>
+                                <option value="">Chọn phường/xã</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Địa chỉ cụ thể *</label>
+                            <input type="text" id="address" placeholder="Số nhà, tên đường..." required>
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="note">Ghi chú đơn hàng</label>
+                            <input type="text" id="note" placeholder="Ghi chú thêm (không bắt buộc)">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-title">Phương thức vận chuyển</div>
+
+                    <div class="shipping-method">
+                        <div class="shipping-option">
+                            <label>
+                                <span><input type="radio" name="shipping" value="standard" checked>Giao hàng tiêu chuẩn</span>
+                                <small>Nhận hàng trong 3 - 5 ngày làm việc</small>
+                            </label>
+                            <div class="shipping-fee">30.000đ</div>
+                        </div>
+                        <div class="shipping-option">
+                            <label>
+                                <span><input type="radio" name="shipping" value="express">Giao hàng nhanh</span>
+                                <small>Nhận hàng trong 1 - 2 ngày làm việc</small>
+                            </label>
+                            <div class="shipping-fee">50.000đ</div>
+                        </div>
+                        <div class="shipping-option">
+                            <label>
+                                <span><input type="radio" name="shipping" value="same-day">Giao hàng trong ngày</span>
+                                <small>Nhận hàng trước 20:00 hôm nay (Chỉ áp dụng nội thành)</small>
+                            </label>
+                            <div class="shipping-fee">80.000đ</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-title">Phương thức thanh toán</div>
+
+                    <div class="payment-method">
+                        <div class="payment-option">
+                            <input type="radio" name="payment" value="COD" checked>
+                            <span>Thanh toán khi nhận hàng (COD)</span>
+                        </div>
+                        <div class="payment-option">
+                            <input type="radio" name="payment" value="BANK_TRANSFER">
+                            <span>Chuyển khoản ngân hàng</span>
+                        </div>
+                        <div class="payment-option">
+                            <input type="radio" name="payment" value="EWALLET">
+                            <span>Ví điện tử (Momo / ZaloPay)</span>
+                        </div>
+                        <div class="payment-option">
+                            <input type="radio" name="payment" value="CREDIT_CARD">
+                            <span>Thẻ tín dụng / Ghi nợ</span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="checkout-summary">
+                <div class="summary-title">Tóm tắt đơn hàng</div>
+                
+                <div class="summary-item">
+                    <div class="summary-thumb">👕</div>
+                    <div class="item-details">
+                        <div class="item-name">Áo Thun Polo Nam Piqué Mắt Chim</div>
+                        <div class="item-qty">Trắng / L · x1</div>
+                    </div>
+                    <div class="item-price">299.000đ</div>
+                </div>
+
+                <div class="summary-item">
+                    <div class="summary-thumb">👖</div>
+                    <div class="item-details">
+                        <div class="item-name">Quần Kaki Nam Dáng Slimfit Lịch Lãm</div>
+                        <div class="item-qty">Xanh Navy / 32 · x1</div>
+                    </div>
+                    <div class="item-price">450.000đ</div>
+                </div>
+
+                <div class="promo-code-section" style="display:flex; gap:12px; margin:18px 0 20px;">
+                    <input type="text" placeholder="Nhập mã giảm giá" style="flex:1; padding:12px 14px; border:1px solid #d7dce3; border-radius:8px; font-size:13px;">
+                    <button type="button" style="padding:12px 16px; border:none; border-radius:8px; background:#002D5E; color:#fff; font-weight:700; cursor:pointer;">Áp dụng</button>
+                </div>
+
+                <div class="summary-row">
+                    <span>Tạm tính</span>
+                    <span>749.000đ</span>
+                </div>
+                
+                <div class="summary-row">
+                    <span>Phí vận chuyển</span>
+                    <span>30.000đ</span>
+                </div>
+                
+                <div class="summary-row">
+                    <span>Giảm giá</span>
+                    <span style="color:#ff8c00;">-50.000đ</span>
+                </div>
+                
+                <div class="summary-row total">
+                    <span>Tổng cộng</span>
+                    <span class="price">729.000đ</span>
+                </div>
+
+                <div class="summary-note">↪ Đổi trả dễ dàng trong 7 ngày.</div>
+
+                <button type="submit" class="checkout-btn">Đặt hàng →</button>
+                <button type="button" class="checkout-btn" style="background:#f5f5f5; color:#002D5E; margin-top:12px;">Quay lại giỏ hàng</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Yody</h3>
+                <div class="footer-section-description">
+                    Mục đẹp mỗi ngày cùng Yody. Chúng tôi cam kết mang đến những sản phẩm chất lượng tốt nhất.
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Hỗ Trợ Khách Hàng</h3>
+                <ul>
+                    <li><a href="#">Chính sách bảo mật</a></li>
+                    <li><a href="#">Điều khoản dịch vụ</a></li>
+                    <li><a href="#">Đổi trả & Hoàn tiền</a></li>
+                    <li><a href="#">Thông tin vận chuyển</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Về Yody</h3>
+                <ul>
+                    <li><a href="#">Tìm cửa hàng</a></li>
+                    <li><a href="#">Câu chuyện thương hiệu</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Đăng Ký Nhận Tin</h3>
+                <p class="footer-newsletter-text">Nhận thông tin ưu đãi mới nhất từ Yody</p>
+                <div class="footer-newsletter">
+                    <input type="email" placeholder="Nhập email của bạn">
+                    <button>➤</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 Yody Fashion. Mọi quyền được bảo lưu.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleDropdown(e) {
+            e.preventDefault();
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        // Đóng dropdown khi click ra ngoài
+        document.addEventListener('click', function(event) {
+            const userDropdown = document.querySelector('.user-dropdown');
+            const dropdown = document.getElementById('userDropdown');
+            
+            if (!userDropdown.contains(event.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+        
+        // Place order: collect form data and store to localStorage then redirect
+        (function(){
+            function parseMoney(text){
+                if(!text) return 0;
+                return parseInt(text.replace(/[^0-9]/g,'')||0,10);
+            }
+
+            var placeOrderBtn = document.querySelector('.checkout-summary .checkout-btn');
+            if(placeOrderBtn){
+                placeOrderBtn.addEventListener('click', function(e){
+                    e.preventDefault();
+                    var form = document.querySelector('.checkout-form');
+                    var fullname = (form.querySelector('#fullname')||{}).value || '';
+                    var phone = (form.querySelector('#phone')||{}).value || '';
+                    var email = (form.querySelector('#email')||{}).value || '';
+                    var province = (form.querySelector('#province')||{}).value || '';
+                    var district = (form.querySelector('#district')||{}).value || '';
+                    var ward = (form.querySelector('#ward')||{}).value || '';
+                    var address = (form.querySelector('#address')||{}).value || '';
+
+                    var shippingSel = document.querySelector('input[name="shipping"]:checked');
+                    var shipping = shippingSel ? shippingSel.value : 'standard';
+                    var shippingFee = 30000;
+                    if(shipping === 'express') shippingFee = 50000;
+                    if(shipping === 'same-day') shippingFee = 80000;
+
+                    var paymentSel = document.querySelector('input[name="payment"]:checked');
+                    var payment = paymentSel ? paymentSel.value : 'COD';
+
+                    // Gather items from summary
+                    var items = [];
+                    var summaryItems = document.querySelectorAll('.checkout-summary .summary-item');
+                    summaryItems.forEach(function(it){
+                        var name = (it.querySelector('.item-details .item-name')||it.querySelector('.summary-name')||{}).textContent || (it.querySelector('.item-name')||{}).textContent || '';
+                        var qtyText = (it.querySelector('.item-qty')||{}).textContent || '';
+                        var qtyMatch = qtyText.match(/x(\d+)/);
+                        var qty = qtyMatch ? parseInt(qtyMatch[1],10) : 1;
+                        var priceText = (it.querySelector('.item-price')||it.querySelector('.summary-price')||{}).textContent || '';
+                        var price = parseMoney(priceText);
+                        items.push({name: name.trim(), quantity: qty, price_cents: price});
+                    });
+
+                    var subtotal = items.reduce(function(s,it){return s + (it.price_cents||0);},0);
+                    var discountNode = document.querySelector('.checkout-summary .summary-row span[style*="color:#ff8c00"]');
+                    var discount = 0;
+                    if(discountNode){ discount = parseMoney(discountNode.textContent); }
+
+                    var total = subtotal + shippingFee - discount;
+
+                    var orderId = 'YD-' + (new Date()).getFullYear() + '-' + Math.random().toString(36).substr(2,6).toUpperCase();
+
+                    var order = {
+                        id: orderId,
+                        created_at: new Date().toISOString(),
+                        fullname: fullname,
+                        phone: phone,
+                        email: email,
+                        province: province,
+                        district: district,
+                        ward: ward,
+                        address: address,
+                        shipping: { method: shipping, fee_cents: shippingFee },
+                        payment: { code: payment },
+                        items: items,
+                        subtotal_cents: subtotal,
+                        discount_cents: discount,
+                        total_cents: total
+                    };
+
+                    localStorage.setItem('yody_latest_order', JSON.stringify(order));
+                    window.location.href = 'orderConfirm.html';
+                });
+            }
+        })();
+    </script>
+</body>
+</html>
